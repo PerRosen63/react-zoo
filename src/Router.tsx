@@ -2,10 +2,12 @@ import { createBrowserRouter } from "react-router-dom";
 import { Home } from "./pages/Home";
 import { Animal } from "./pages/Animal";
 import { Animals } from "./pages/Animals";
+import { Layout } from "./pages/Layout";
 
 export const router = createBrowserRouter([
     {
         path: '/',
+        element: <Layout></Layout>,
         children: [
             {
                 path: '/',
