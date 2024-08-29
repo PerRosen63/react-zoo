@@ -4,7 +4,6 @@ import { IAnimal } from "../models/IAnimal";
 
 export const Animals = () => {
     const animals = useLoaderData() as IAnimal[];
-    console.log(animals);
 
     return<>
         Animals

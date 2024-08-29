@@ -3,7 +3,7 @@ import { Home } from "./pages/Home";
 import { Animal } from "./pages/Animal";
 import { Animals } from "./pages/Animals";
 import { Layout } from "./pages/Layout";
-import { animalsLoader } from "./loaders/animalLoader";
+import { animalLoader, animalsLoader } from "./loaders/animalLoader";
 
 export const router = createBrowserRouter([
     {
@@ -22,6 +22,7 @@ export const router = createBrowserRouter([
             {
                 path: '/animal/:id',
                 element: <Animal></Animal>,
+                loader: animalLoader,
             }
         ]
     }
