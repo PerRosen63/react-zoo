@@ -4,11 +4,13 @@ import { Animal } from "./pages/Animal";
 import { Animals } from "./pages/Animals";
 import { Layout } from "./pages/Layout";
 import { animalLoader, animalsLoader } from "./loaders/animalLoader";
+import { NotFound } from "./pages/NotFound";
 
 export const router = createBrowserRouter([
     {
         path: '/',
         element: <Layout></Layout>,
+        errorElement: <NotFound></NotFound>,
         children: [
             {
                 path: '/',
