@@ -2,12 +2,20 @@ import { Params } from "react-router-dom";
 import { IAnimal } from "../models/IAnimal";
 
 export const animalsLoader = async () => {
-  const response = await fetch("https://animals.azurewebsites.net/api/animals");
-  const result: IAnimal = await response.json();
+  const cachedAnimals = localStorage.getItem("animals");
 
-  localStorage.setItem("animals", JSON.stringify(result));
+  if (cachedAnimals) {
+    return JSON.parse(cachedAnimals);
+  } else {
+    const response = await fetch(
+      "https://animals.azurewebsites.net/api/animals"
+    );
+    const result: IAnimal = await response.json();
 
-  return result;
+    localStorage.setItem("animals", JSON.stringify(result));
+
+    return result;
+  }
 };
 
 interface IAnimalLoader {
@@ -15,10 +23,29 @@ interface IAnimalLoader {
 }
 
 export const animalLoader = async ({ params }: IAnimalLoader) => {
-  const response = await fetch(
-    "https://animals.azurewebsites.net/api/animals/" + params.id
-  );
-  const result = await response.json();
+  const cachedAnimalsString = localStorage.getItem("animals");
 
-  return result;
+  if (cachedAnimalsString) {
+    const cachedAnimals: IAnimal[] = JSON.parse(cachedAnimalsString);
+
+    const animalId = params.id ? parseInt(params.id, 10) : undefined;
+
+    if (animalId !== undefined) {
+      const animal = cachedAnimals.find((animal) => animal.id === animalId);
+
+      if (animal) {
+        return animal;
+      } else {
+        console.error("Animal not found in cache:", params.id);
+        throw new Error("Animal not found");
+      }
+    }
+  } else {
+    console.error("No animals found in cache.");
+    const response = await fetch(
+      "https://animals.azurewebsites.net/api/animals"
+    );
+    const result: IAnimal = await response.json();
+    return result;
+  }
 };
