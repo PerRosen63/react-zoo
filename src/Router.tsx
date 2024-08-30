@@ -10,7 +10,6 @@ export const router = createBrowserRouter([
     {
         path: '/',
         element: <Layout></Layout>,
-        errorElement: <NotFound></NotFound>,
         children: [
             {
                 path: '/',
@@ -25,7 +24,12 @@ export const router = createBrowserRouter([
                 path: '/animal/:id',
                 element: <Animal></Animal>,
                 loader: animalLoader,
+            },
+            {
+                
             }
-        ]
+        ],
+        errorElement: <NotFound /> // Correct usage
+
     }
 ])
