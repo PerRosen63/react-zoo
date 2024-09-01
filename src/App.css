@@ -49,6 +49,12 @@ header nav {
   border: 1px solid lightgrey;
  }
 
+ .single-animal {
+  display: flex;
+    flex-direction: column;
+    align-items: center;
+ }
+
  .error-page {
   display: flex;
   justify-content: center;

@@ -3,4 +3,6 @@ export interface IAnimal {
     shortDescription: string;
     imageUrl: string;
     id: number;
+    isFed: boolean;
+    lastFed: string;
 }
