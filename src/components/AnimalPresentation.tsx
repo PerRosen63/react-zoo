@@ -1,35 +1,35 @@
-import { useState } from "react";
 import { IAnimal } from "../models/IAnimal";
 
 interface IAnimalPresentationProps {
   animal: IAnimal;
-  updateAnimal: (updatedAnimal: IAnimal) => void;
+  isFeedable: boolean;
+  onFeed: () => void;
+  onUpdateAnimal: (updatedAnimal: IAnimal) => void;
 }
 
 export const AnimalPresentation = ({
   animal,
-  updateAnimal,
+  isFeedable,
+  onFeed,
+  onUpdateAnimal,
 }: IAnimalPresentationProps) => {
-  const [lastFed, setLastFed] = useState(animal.lastFed);
-
-  const handleFeedAnimal = () => {
-    setLastFed(new Date().toLocaleString());
-
-    updateAnimal({
+  const handleFeedClick = () => {
+    onFeed();
+    const updatedAnimal = {
       ...animal,
       isFed: true,
       lastFed: new Date().toLocaleString(),
-    });
+    };
+    onUpdateAnimal(updatedAnimal);
   };
-
   return (
     <>
       <div className="single-animal">
         <h1>{animal.name}</h1>
-        <p>{lastFed}</p>
+        <p>{animal.lastFed}</p>
         <div>
-          <button disabled={animal.isFed} onClick={handleFeedAnimal}>
-            Click me
+          <button disabled={!isFeedable} onClick={handleFeedClick}>
+            Mata mig
           </button>
         </div>
       </div>
