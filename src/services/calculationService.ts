@@ -1,13 +1,18 @@
-export const calculateRemainingTime = (lastFedTime: number): number | null => {
-  const threeHoursInMillis = 3 * 60 * 60 * 1000;
+export const calculateRemainingTimeAnimal = (
+  lastFedTime: number,
+  hoursUntilNextFeeding = 3
+): number | null => {
+  const timeInMillis = hoursUntilNextFeeding * 60 * 60 * 1000;
   const now = Date.now();
   const timeSinceLastFed = now - lastFedTime;
 
-  console.log("Tid sedan matning", timeSinceLastFed);
-
-  if (timeSinceLastFed >= threeHoursInMillis) {
+  if (timeSinceLastFed >= timeInMillis) {
     return null;
   } else {
-    return threeHoursInMillis - timeSinceLastFed;
+    return timeInMillis - timeSinceLastFed;
   }
+};
+
+export const calculateRemainingTimeAnimals = (lastFedTime: number) => {
+  return calculateRemainingTimeAnimal(lastFedTime, 4);
 };

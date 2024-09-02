@@ -2,7 +2,7 @@ import { useLoaderData } from "react-router-dom";
 import { IAnimal } from "../models/IAnimal";
 import { AnimalPresentation } from "../components/AnimalPresentation";
 import { useEffect, useState } from "react";
-import { calculateRemainingTime } from "../services/calculationService";
+import { calculateRemainingTimeAnimal } from "../services/calculationService";
 
 export const Animal = () => {
   const loadedAnimal = useLoaderData() as IAnimal;
@@ -12,7 +12,7 @@ export const Animal = () => {
 
   useEffect(() => {
     const lastFedTime = animal.lastFed ? new Date(animal.lastFed).getTime() : 0;
-    const remainingTime = calculateRemainingTime(lastFedTime);
+    const remainingTime = calculateRemainingTimeAnimal(lastFedTime);
 
     if (remainingTime === null) {
       setIsFeedable(true);
