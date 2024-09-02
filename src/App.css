@@ -56,6 +56,15 @@ header nav {
     padding: 2rem;;
  }
 
+ .single-animal button {
+  background-color: orange;
+ }
+ .single-animal button[disabled] {
+  cursor: no-drop;
+  background-color: lightgrey;
+  border: grey;
+ }
+
  .long-description {
   text-align: center;
     margin: 2rem;
