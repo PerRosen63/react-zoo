@@ -1,8 +1,10 @@
 import { Params } from "react-router-dom";
-import { IAnimal } from "../models/IAnimal";
+import { getAnimal, getAnimals } from "../services/animalService";
 
 export const animalsLoader = async () => {
-  const cachedAnimals = localStorage.getItem("animals");
+  return await getAnimals();
+
+  /* const cachedAnimals = localStorage.getItem("animals");
 
   if (cachedAnimals) {
     return JSON.parse(cachedAnimals);
@@ -15,7 +17,7 @@ export const animalsLoader = async () => {
     localStorage.setItem("animals", JSON.stringify(result));
 
     return result;
-  }
+  } */
 };
 
 interface IAnimalLoader {
@@ -23,7 +25,9 @@ interface IAnimalLoader {
 }
 
 export const animalLoader = async ({ params }: IAnimalLoader) => {
-  const cachedAnimalsString = localStorage.getItem("animals");
+  return await getAnimal(params.id!);
+
+  /* const cachedAnimalsString = localStorage.getItem("animals");
 
   if (cachedAnimalsString) {
     const cachedAnimals: IAnimal[] = JSON.parse(cachedAnimalsString);
@@ -47,5 +51,5 @@ export const animalLoader = async ({ params }: IAnimalLoader) => {
     );
     const result: IAnimal = await response.json();
     return result;
-  }
+  } */
 };
