@@ -29,7 +29,7 @@ export const AnimalPresentation = ({
         <p>{animal.lastFed}</p>
         <div>
           <button disabled={!isFeedable} onClick={handleFeedClick}>
-            Mata mig
+            {isFeedable ? "Mata djuret!" : "Matad"}
           </button>
         </div>
       </div>
