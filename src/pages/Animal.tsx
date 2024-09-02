@@ -2,6 +2,7 @@ import { useLoaderData } from "react-router-dom";
 import { IAnimal } from "../models/IAnimal";
 import { AnimalPresentation } from "../components/AnimalPresentation";
 import { useEffect, useState } from "react";
+import { calculateRemainingTime } from "../services/calculationService";
 
 export const Animal = () => {
   const loadedAnimal = useLoaderData() as IAnimal;
@@ -10,28 +11,17 @@ export const Animal = () => {
   console.log(loadedAnimal);
 
   useEffect(() => {
-    const calculateRemainingTime = () => {
-      const threeHoursInMillis = 3 * 60 * 60 * 1000;
-      const lastFedTime = animal.lastFed
-        ? new Date(animal.lastFed).getTime()
-        : 0;
+    const lastFedTime = animal.lastFed ? new Date(animal.lastFed).getTime() : 0;
+    const remainingTime = calculateRemainingTime(lastFedTime);
 
-      const now = Date.now();
-      const timeSinceLastFed = now - lastFedTime;
-
-      console.log("Tid sedan matning", timeSinceLastFed);
-
-      if (timeSinceLastFed >= threeHoursInMillis) {
+    if (remainingTime === null) {
+      setIsFeedable(true);
+    } else {
+      const timeoutId = setTimeout(() => {
         setIsFeedable(true);
-      } else {
-        // If not enough time has passed, set a timeout
-        const remainingTime = threeHoursInMillis - timeSinceLastFed;
-        setTimeout(() => {
-          setIsFeedable(true);
-        }, remainingTime);
-      }
-    };
-    calculateRemainingTime();
+      }, remainingTime);
+      return () => clearTimeout(timeoutId);
+    }
   }, [animal.lastFed]);
 
   const handleFeedAnimal = () => {
