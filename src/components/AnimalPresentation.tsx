@@ -22,11 +22,19 @@ export const AnimalPresentation = ({
     };
     onUpdateAnimal(updatedAnimal);
   };
+
+  const formatDate = (dateString: string): string => {
+    const date = new Date(dateString);
+    const formattedDate = date.toLocaleDateString();
+    const formattedTime = date.toLocaleTimeString(); // Get the time part
+    return `${formattedDate} ${formattedTime}`;
+  };
+
   return (
     <>
       <div className="single-animal">
         <h1>{animal.name}</h1>
-        <p>{animal.lastFed}</p>
+        <p>Sista matningen: {formatDate(animal.lastFed)}</p>
         <div>
           <button disabled={!isFeedable} onClick={handleFeedClick}>
             {isFeedable ? "Mata djuret!" : "Matad"}
