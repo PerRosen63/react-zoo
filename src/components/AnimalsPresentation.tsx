@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom";
 import { IAnimal } from "../models/IAnimal";
 import placeholderImage from "../assets/placeholder.png";
-import { calculateRemainingTimeAnimals } from "../services/calculationService"; // Import the function
+import { calculateRemainingTimeAnimals } from "../services/calculationService";
 
 interface IAnimalsPresentationProps {
   animals: IAnimal[];
+  onUpdateAnimal: (updatedAnimal: IAnimal) => void;
 }
 
 export const AnimalsPresentation = ({ animals }: IAnimalsPresentationProps) => {
@@ -16,7 +17,7 @@ export const AnimalsPresentation = ({ animals }: IAnimalsPresentationProps) => {
             ? new Date(animal.lastFed).getTime()
             : 0;
           const remainingTime = calculateRemainingTimeAnimals(lastFedTime);
-          const showFeedMessage = remainingTime === null; // Check if it's time to feed
+          const showFeedMessage = remainingTime === null;
 
           return (
             <div key={animal.id} className="animal">
@@ -34,10 +35,13 @@ export const AnimalsPresentation = ({ animals }: IAnimalsPresentationProps) => {
               <div>
                 <h3>{animal.name}</h3>
               </div>
-              {/* Conditionally render the feed message */}
+              <div className="short-description">
+                <p>{animal.shortDescription}</p>
+              </div>
               {showFeedMessage && (
                 <div className="feed-message">
-                  {animal.name + " "} behöver matas!
+                  OBS!{" " + animal.name + " "} behöver matas!<br></br>Det har
+                  gått mer än 4 tim.
                 </div>
               )}
               <div>

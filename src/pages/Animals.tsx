@@ -1,13 +1,12 @@
-import { useLoaderData } from "react-router-dom";
 import { AnimalsPresentation } from "../components/AnimalsPresentation";
-import { IAnimal } from "../models/IAnimal";
+import { useAnimals } from "../hooks/useAnimals";
 
 export const Animals = () => {
-  const animals = useLoaderData() as IAnimal[];
+  const { animals, updateAnimal } = useAnimals();
 
   return (
     <>
-      <AnimalsPresentation animals={animals}></AnimalsPresentation>
+      <AnimalsPresentation animals={animals} onUpdateAnimal={updateAnimal} />
     </>
   );
 };

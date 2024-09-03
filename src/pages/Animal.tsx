@@ -1,45 +1,43 @@
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useParams } from "react-router-dom";
 import { IAnimal } from "../models/IAnimal";
 import { AnimalPresentation } from "../components/AnimalPresentation";
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { calculateRemainingTimeAnimal } from "../services/calculationService";
+import { useAnimals } from "../hooks/useAnimals";
 
 export const Animal = () => {
+  const { animals, updateAnimal, updateCount } = useAnimals();
   const loadedAnimal = useLoaderData() as IAnimal;
-  const [animal, setAnimal] = useState<IAnimal>(loadedAnimal);
-  const [isFeedable, setIsFeedable] = useState(!animal.isFed);
-  console.log(loadedAnimal);
+  const animalId = useParams().id;
+  const [currentAnimal, setCurrentAnimal] = useState<IAnimal>(loadedAnimal);
+  const [isFeedable, setIsFeedable] = useState(false);
 
   useEffect(() => {
-    const lastFedTime = animal.lastFed ? new Date(animal.lastFed).getTime() : 0;
+    const lastFedTime = currentAnimal.lastFed
+      ? new Date(currentAnimal.lastFed).getTime()
+      : 0;
     const remainingTime = calculateRemainingTimeAnimal(lastFedTime);
 
-    if (remainingTime === null) {
-      setIsFeedable(true);
-    } else {
-      const timeoutId = setTimeout(() => {
-        setIsFeedable(true);
-      }, remainingTime);
-      return () => clearTimeout(timeoutId);
-    }
-  }, [animal.lastFed]);
+    setIsFeedable(remainingTime === null);
+  }, [currentAnimal]);
 
+  useEffect(() => {
+    const updatedAnimal = animals.find(
+      (a) => a.id === parseInt(animalId ?? "", 10)
+    );
+    if (updatedAnimal) {
+      setCurrentAnimal(updatedAnimal);
+    }
+  }, [animals, animalId, updateCount]);
   const handleFeedAnimal = () => {
     const now = new Date();
 
-    setAnimal({
-      ...animal,
+    const updatedAnimal = {
+      ...currentAnimal,
       isFed: true,
       lastFed: now.toLocaleString(),
-    });
+    };
 
-    setIsFeedable(false);
-  };
-
-  const updateAnimal = (updatedAnimal: IAnimal) => {
-    setAnimal(updatedAnimal);
-
-    // Update local storage (if needed)
     const storedAnimals = localStorage.getItem("animals");
     if (storedAnimals) {
       const animals: IAnimal[] = JSON.parse(storedAnimals);
@@ -48,15 +46,17 @@ export const Animal = () => {
       );
       localStorage.setItem("animals", JSON.stringify(updatedAnimals));
     }
+
+    updateAnimal(updatedAnimal);
+    setIsFeedable(false);
   };
 
   return (
     <>
       <AnimalPresentation
-        animal={animal}
+        animal={currentAnimal}
         isFeedable={isFeedable}
         onFeed={handleFeedAnimal}
-        onUpdateAnimal={updateAnimal}
       ></AnimalPresentation>
     </>
   );

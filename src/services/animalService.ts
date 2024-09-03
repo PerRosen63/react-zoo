@@ -1,14 +1,15 @@
 import { IAnimal } from "../models/IAnimal";
 
-const cachedAnimalsString = localStorage.getItem("animals");
 const BASE_URL = "https://animals.azurewebsites.net/api/animals";
 
 export const getAnimals = async () => {
+  const cachedAnimalsString = localStorage.getItem("animals");
+
   if (cachedAnimalsString) {
     return JSON.parse(cachedAnimalsString);
   } else {
     const response = await fetch(BASE_URL);
-    const result: IAnimal = await response.json();
+    const result: IAnimal[] = await response.json();
 
     localStorage.setItem("animals", JSON.stringify(result));
 
@@ -17,6 +18,8 @@ export const getAnimals = async () => {
 };
 
 export const getAnimal = async (id: string) => {
+  const cachedAnimalsString = localStorage.getItem("animals");
+
   if (cachedAnimalsString) {
     const cachedAnimals: IAnimal[] = JSON.parse(cachedAnimalsString);
 
@@ -34,7 +37,7 @@ export const getAnimal = async (id: string) => {
     }
   } else {
     console.error("No animals found in cache.");
-    const response = await fetch(BASE_URL);
+    const response = await fetch(`${BASE_URL}/${id}`);
     const result: IAnimal = await response.json();
     return result;
   }

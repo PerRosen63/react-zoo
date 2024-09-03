@@ -6,31 +6,19 @@ interface IAnimalPresentationProps {
   animal: IAnimal;
   isFeedable: boolean;
   onFeed: () => void;
-  onUpdateAnimal: (updatedAnimal: IAnimal) => void;
 }
 
 export const AnimalPresentation = ({
   animal,
   isFeedable,
   onFeed,
-  onUpdateAnimal,
 }: IAnimalPresentationProps) => {
   const [imageLoadError, setImageLoadError] = useState(false);
-
-  const handleFeedClick = () => {
-    onFeed();
-    const updatedAnimal = {
-      ...animal,
-      isFed: true,
-      lastFed: new Date().toLocaleString(),
-    };
-    onUpdateAnimal(updatedAnimal);
-  };
 
   const formatDate = (dateString: string): string => {
     const date = new Date(dateString);
     const formattedDate = date.toLocaleDateString();
-    const formattedTime = date.toLocaleTimeString(); // Get the time part
+    const formattedTime = date.toLocaleTimeString();
     return `${formattedDate} ${formattedTime}`;
   };
 
@@ -60,7 +48,7 @@ export const AnimalPresentation = ({
         <div className="long-description">{animal.longDescription}</div>
         <p>Sista matningen: {formatDate(animal.lastFed)}</p>
         <div>
-          <button disabled={!isFeedable} onClick={handleFeedClick}>
+          <button disabled={!isFeedable} onClick={onFeed}>
             {isFeedable ? "Mata djuret!" : "Matad"}
           </button>
         </div>
