@@ -44,9 +44,16 @@ header nav {
   border-bottom: 3px solid #646cff;
  }
 
+ .home {
+  display: flex;
+    flex-direction: column;
+    align-items: center;
+ }
+
  .animal {
   padding: 1.5rem;
   border: 1px solid lightgrey;
+  margin: 1rem;
  }
 
  .single-animal {
@@ -79,4 +86,20 @@ header nav {
  .error-page {
   display: flex;
   justify-content: center;
+ }
+
+ .animals {
+  display: flex;
+    flex-direction: column;
+    align-items: center;
+ }
+
+ .short-description {
+  max-width: 300px;
+ }
+
+ .feed-message {
+  font-weight: 700;
+  color: red;
+  margin-bottom: 0.6rem;
  }
